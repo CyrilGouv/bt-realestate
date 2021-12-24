@@ -1,8 +1,15 @@
 from django.shortcuts import render
+from .models import Listing
 
 
 def listings(request):
-    return render(request, 'listings/listings.html')
+    listings = Listing.objects.order_by('-list_date').filter(is_published=True)
+    
+    context = {
+        'listings': listings
+    }
+    
+    return render(request, 'listings/listings.html', context)
 
 
 
