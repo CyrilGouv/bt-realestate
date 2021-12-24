@@ -13,7 +13,7 @@ def listings(request):
 
 
 
-def detail(request):
+def detail(request, listing_id):
     return render(request, 'listings/listing.html')
 
 
