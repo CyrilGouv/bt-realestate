@@ -1,10 +1,15 @@
 from django.shortcuts import get_object_or_404, render
 from .models import Listing
+from django.core.paginator import Paginator
 
 
 def listings(request):
-    listings = Listing.objects.order_by('-list_date').filter(is_published=True)
+    listings_qs = Listing.objects.order_by('-list_date').filter(is_published=True)
     
+    paginator = Paginator(listings_qs, 3)
+    page = request.GET.get('page')
+    listings = paginator.get_page(page)
+
     context = {
         'listings': listings
     }
