@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import Listing
 
 
@@ -14,7 +14,13 @@ def listings(request):
 
 
 def detail(request, listing_id):
-    return render(request, 'listings/listing.html')
+    listing = get_object_or_404(Listing, id=listing_id)
+
+    context = {
+        'listing': listing
+    }
+
+    return render(request, 'listings/listing.html', context)
 
 
 
