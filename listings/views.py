@@ -32,11 +32,44 @@ def detail(request, listing_id):
 
 def search(request):
     
+    listings_qs = Listing.objects.order_by('-list_date').filter(is_published=True)
 
     if request.method == 'GET':
-        pass
 
-    listings_qs = Listing.objects.order_by('-list_date').filter(is_published=True)
+        if 'keywords' in request.GET:
+            keywords = request.GET.get('keywords')
+
+            if keywords:
+                listings_qs = listings_qs.filter(description__icontains=keywords)
+
+        
+        if 'city' in request.GET:
+            city = request.GET.get('city')
+
+            if city:
+                listings_qs = listings_qs.filter(city__iexact=city)
+
+
+        if 'state' in request.GET:
+            state = request.GET.get('state')
+
+            if state:
+                listings_qs = listings_qs.filter(state__iexact=state)
+
+
+        if 'bedrooms' in request.GET:
+            bedrooms = request.GET.get('bedrooms')
+
+            if bedrooms:
+                listings_qs = listings_qs.filter(bedrooms__lte=bedrooms)
+
+        
+        if 'price' in request.GET:
+            price = request.GET.get('price')
+
+            if price:
+                listings_qs = listings_qs.filter(price__lte=price)
+
 
     context = {
         'listings': listings_qs,
@@ -44,6 +77,6 @@ def search(request):
         'bedrooms': bedroom_choices,
         'states': state_choices,
         'prices': price_choices,
-        }
+    }
 
     return render(request, 'listings/search.html', context)
