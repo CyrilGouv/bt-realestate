@@ -13,6 +13,15 @@ def enquiry(request):
         phone = request.POST.get('phone')
         message = request.POST.get('message')
 
+        if request.user.is_authenticated:
+            current_user_id = request.user.id
+
+            has_enquiry = Contact.objects.filter(listing_id=listing_id, user_id=current_user_id)
+
+            if has_enquiry:
+                messages.error(request, 'You have already made an enquiry for this house !')
+                return redirect('/listings/' + listing_id)
+
         contact = Contact(user_id=user_id, listing=listing, listing_id=listing_id, name=name, email=email, phone=phone, message=message)
         contact.save()
 
