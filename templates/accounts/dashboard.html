@@ -45,29 +45,21 @@
                     <th></th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td>22</td>
-                    <td>45 Drivewood Circle</td>
-                    <td>
-                    <a class="btn btn-light" href="#">View Listing</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>43</td>
-                    <td>22 Westbrook rd</td>
-                    <td>
-                    <a class="btn btn-light" href="#">View Listing</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>31</td>
-                    <td>12 Samson Ave</td>
-                    <td>
-                    <a class="btn btn-light" href="#">View Listing</a>
-                    </td>
-                </tr>
-                </tbody>
+                {% if contacts %}
+                    <tbody>
+                        {% for contact in contacts %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ contact.listing }}</td>
+                                <td>
+                                    <a class="btn btn-light" href="{% url 'detail' contact.listing_id %}">View Listing</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                {% else %}
+                    <tbody><p>You do not have enquiry yet...</p></tbody>
+                {% endif %}
             </table>
             </div>
         </div>
